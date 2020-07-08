@@ -1,0 +1,181 @@
+<%if(videos.length>=1){%>
+  <div class="col-md-3 col-sm-12">
+    <div class="card" style="width: 100%;">
+      <img class="card-img-top" src='<%=videos[0].thumbnail%>' alt="Card image cap">
+      <div class="card-body">
+        <a href="https://www.youtube.com/watch?v=<%=videos[0].videoId%>" target="_blank">
+          <h5 class="card-title text-info font-weight-bold"><%=videos[0].title%></h5>
+        </a>
+      </div>
+      <div class="card-body">
+        <div class="row">
+          <div class="col-12 col-sm-6 col-md-3">
+            <div class="info-box-content">
+              <span class="text-success"><i class="fa fa-eye" aria-hidden="true"></i></span>
+              <span class="info-box-number"><%=videos[0].viewCount%></span>
+            </div>
+            <!-- /.info-box-content -->
+          </div>
+          <div class="col-12 col-sm-6 col-md-3">
+            <div class="info-box-content">
+              <span class="text-primary"><i class="fa fa-thumbs-up" aria-hidden="true"></i></span>
+              <span class="info-box-number"><%=videos[0].likeCount%></span>
+            </div>
+            <!-- /.info-box-content -->
+          </div>
+          <div class="col-12 col-sm-6 col-md-3">
+            <div class="info-box-content">
+              <span class="text-danger"><i class="fa fa-thumbs-down" aria-hidden="true"></i></span>
+              <span class="info-box-number"><%=videos[0].dislikeCount%></span>
+            </div>
+            <!-- /.info-box-content -->
+          </div>
+          <div class="col-12 col-sm-6 col-md-3">
+            <div class="info-box-content">
+              <span class="text-warning"><i class="fa fa-comments" aria-hidden="true"></i></span>
+              <span class="info-box-number"><%=videos[0].commentCount%></span>
+            </div>
+            <!-- /.info-box-content -->
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+<%}%>
+
+<%if(videos.length>=2){%>
+  <div class="col-md-3 col-sm-12">
+    <div class="card" style="width: 100%;">
+      <img class="card-img-top" src='<%=videos[1].thumbnail%>' alt="Card image cap">
+      <div class="card-body">
+        <a href="https://www.youtube.com/watch?v=<%=videos[1].videoId%>" target="_blank">
+          <h5 class="card-title text-info font-weight-bold"><%=videos[1].title%></h5>
+        </a>
+      </div>
+      <div class="card-body">
+        <div class="row">
+          <div class="col-12 col-sm-6 col-md-3">
+            <div class="info-box-content">
+              <span class="text-success"><i class="fa fa-eye" aria-hidden="true"></i></span>
+              <span class="info-box-number"><%=videos[1].viewCount%></span>
+            </div>
+            <!-- /.info-box-content -->
+          </div>
+          <div class="col-12 col-sm-6 col-md-3">
+            <div class="info-box-content">
+              <span class="text-primary"><i class="fa fa-thumbs-up" aria-hidden="true"></i></span>
+              <span class="info-box-number"><%=videos[1].likeCount%></span>
+            </div>
+            <!-- /.info-box-content -->
+          </div>
+          <div class="col-12 col-sm-6 col-md-3">
+            <div class="info-box-content">
+              <span class="text-danger"><i class="fa fa-thumbs-down" aria-hidden="true"></i></span>
+              <span class="info-box-number"><%=videos[1].dislikeCount%></span>
+            </div>
+            <!-- /.info-box-content -->
+          </div>
+          <div class="col-12 col-sm-6 col-md-3">
+            <div class="info-box-content">
+              <span class="text-warning"><i class="fa fa-comments" aria-hidden="true"></i></span>
+              <span class="info-box-number"><%=videos[1].commentCount%></span>
+            </div>
+            <!-- /.info-box-content -->
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+<%}%>
+
+
+<%if(videos.length>=3){%>
+  <div class="col-md-3 col-sm-12">
+    <div class="card" style="width: 100%;">
+      <img class="card-img-top" src='<%=videos[2].thumbnail%>' alt="Card image cap">
+      <div class="card-body">
+        <a href="https://www.youtube.com/watch?v=<%=videos[2].videoId%>" target="_blank">
+          <h5 class="card-title text-info font-weight-bold"><%=videos[2].title%></h5>
+        </a>
+      </div>
+      <div class="card-body">
+        <div class="row">
+          <div class="col-12 col-sm-6 col-md-3">
+            <div class="info-box-content">
+              <span class="text-success"><i class="fa fa-eye" aria-hidden="true"></i></span>
+              <span class="info-box-number"><%=videos[2].viewCount%></span>
+            </div>
+            <!-- /.info-box-content -->
+          </div>
+          <div class="col-12 col-sm-6 col-md-3">
+            <div class="info-box-content">
+              <span class="text-primary"><i class="fa fa-thumbs-up" aria-hidden="true"></i></span>
+              <span class="info-box-number"><%=videos[2].likeCount%></span>
+            </div>
+            <!-- /.info-box-content -->
+          </div>
+          <div class="col-12 col-sm-6 col-md-3">
+            <div class="info-box-content">
+              <span class="text-danger"><i class="fa fa-thumbs-down" aria-hidden="true"></i></span>
+              <span class="info-box-number"><%=videos[2].dislikeCount%></span>
+            </div>
+            <!-- /.info-box-content -->
+          </div>
+          <div class="col-12 col-sm-6 col-md-3">
+            <div class="info-box-content">
+              <span class="text-warning"><i class="fa fa-comments" aria-hidden="true"></i></span>
+              <span class="info-box-number"><%=videos[2].commentCount%></span>
+            </div>
+            <!-- /.info-box-content -->
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <%}%>
+
+
+<%if(videos.length>=4){%>
+  <div class="col-md-3 col-sm-12">
+    <div class="card" style="width: 100%;">
+      <img class="card-img-top" src='<%=videos[3].thumbnail%>' alt="Card image cap">
+      <div class="card-body">
+        <a href="https://www.youtube.com/watch?v=<%=videos[3].videoId%>" target="_blank">
+          <h5 class="card-title text-info font-weight-bold"><%=videos[3].title%></h5>
+        </a>
+      </div>
+      <div class="card-body">
+        <div class="row">
+          <div class="col-12 col-sm-6 col-md-3">
+            <div class="info-box-content">
+              <span class="text-success"><i class="fa fa-eye" aria-hidden="true"></i></span>
+              <span class="info-box-number"><%=videos[3].viewCount%></span>
+            </div>
+            <!-- /.info-box-content -->
+          </div>
+          <div class="col-12 col-sm-6 col-md-3">
+            <div class="info-box-content">
+              <span class="text-primary"><i class="fa fa-thumbs-up" aria-hidden="true"></i></span>
+              <span class="info-box-number"><%=videos[3].likeCount%></span>
+            </div>
+            <!-- /.info-box-content -->
+          </div>
+          <div class="col-12 col-sm-6 col-md-3">
+            <div class="info-box-content">
+              <span class="text-danger"><i class="fa fa-thumbs-down" aria-hidden="true"></i></span>
+              <span class="info-box-number"><%=videos[3].dislikeCount%></span>
+            </div>
+            <!-- /.info-box-content -->
+          </div>
+          <div class="col-12 col-sm-6 col-md-3">
+            <div class="info-box-content">
+              <span class="text-warning"><i class="fa fa-comments" aria-hidden="true"></i></span>
+              <span class="info-box-number"><%=videos[3].commentCount%></span>
+            </div>
+            <!-- /.info-box-content -->
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+<%}%>

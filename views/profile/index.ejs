@@ -1,0 +1,73 @@
+<div class="card card-info">
+  <div class="card-header">
+    <h2 class="card-title font-weight-bold text-uppercase">THỐNG KÊ THÔNG TIN KÊNH</h2>
+  </div>
+  <!-- /.card-header -->
+  <div class="row">
+    <div class="col-12 col-sm-6 col-md-3">
+      <div class="info-box">
+        <span class="info-box-icon bg-info text-danger"><i class="fa  fa-heart" aria-hidden="true"></i></span>
+        <div class="info-box-content">
+          <span class="info-box-text">Uy tín</span>
+          <span class="info-box-number">
+            <%=user.reputationPoint%>
+          </span>
+        </div>
+        <!-- /.info-box-content -->
+      </div>
+      <!-- /.info-box -->
+    </div>
+    <!-- /.col -->
+    <div class="col-12 col-sm-6 col-md-3">
+      <div class="info-box mb-3">
+        <span class="info-box-icon bg-danger elevation-1"><i class="fa fa-film" aria-hidden="true"></i></span>
+        <div class="info-box-content">
+          <span class="info-box-text">Videos</span>
+          <span class="info-box-number"><%=user.videoCount%></span>
+        </div>
+        <!-- /.info-box-content -->
+      </div>
+      <!-- /.info-box -->
+    </div>
+    <!-- /.col -->
+
+    <!-- fix for small devices only -->
+    <div class="clearfix hidden-md-up"></div>
+
+    <div class="col-12 col-sm-6 col-md-3">
+      <div class="info-box mb-3">
+        <span class="info-box-icon bg-success elevation-1"><i class="fa fa-eye" aria-hidden="true"></i></span>
+        <div class="info-box-content">
+          <span class="info-box-text">Views</span>
+          <span class="info-box-number"><%=user.viewCount%></span>
+        </div>
+        <!-- /.info-box-content -->
+      </div>
+      <!-- /.info-box -->
+    </div>
+    <!-- /.col -->
+    <div class="col-12 col-sm-6 col-md-3">
+      <div class="info-box mb-3">
+        <span class="info-box-icon bg-warning elevation-1"><i class="fa fa-users" aria-hidden="true"></i></span>
+
+        <div class="info-box-content">
+          <span class="info-box-text">Members</span>
+          <span class="info-box-number"><%=user.subscriberCount%></span>
+        </div>
+        <!-- /.info-box-content -->
+      </div>
+      <!-- /.info-box -->
+    </div>
+    <!-- /.col -->
+
+
+  </div>
+
+  <div class="card-header">
+    <h2 class="card-title font-weight-bold text-uppercase">VIDEO GẦN ĐÂY</h2>
+  </div>
+  <div class="row">
+    <%-include('./latedvideos')%>
+  </div>
+</div>
+<%-include('../layouts/templates/footer')%>

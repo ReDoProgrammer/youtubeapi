@@ -1,0 +1,35 @@
+<div class="card card-info">
+  <div class="card-header">
+    <h2 class="card-title font-weight-bold text-uppercase">10 KÊNH ĐĂNG KÝ BẠN GẦN ĐÂY NHẤT</h2>
+  </div>
+  <!-- /.card-header -->
+  <!-- form start -->
+  <form class="form-horizontal" method="post" action="/profile/cross-sub/setting">
+    <div class="card-body">
+       <table class="table table-striped">
+           <thead style="background-color:#CCFFFF">
+             <th class="text-success">
+               Logo
+             </th>
+              <th class="text-success">
+               Tên kênh
+             </th>
+           </thead>
+           <tbody>
+             <%data.forEach(function(channel){%>
+                <tr>
+                  <td><a href='https://www.youtube.com/channel/<%=channel.subscriberSnippet.channelId%>' target='_blank'><img src = '<%=channel.subscriberSnippet.thumbnails.default.url%>' class ='img-circle' width="40px;"/></a></td>
+                  <td class='align-middle font-weight-bold'><a href='https://www.youtube.com/channel/<%=channel.subscriberSnippet.channelId%>' target='_blank'><%=channel.subscriberSnippet.title%></a>
+                  </td>
+                </tr>
+              <%})%>
+           </tbody>
+         </table>
+
+    </div>
+    <!-- /.card-body -->
+  </form>
+</div>
+
+
+<%-include('../layouts/templates/footer')%>

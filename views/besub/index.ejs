@@ -1,0 +1,60 @@
+
+<div class="card card-info">
+  <div class="card-header">
+    <h2 class="card-title font-weight-bold text-uppercase">DANH SÁCH KÊNH ĐĂNG KÝ BẠN (<span class='text-warning'> <%=total%>/<%=user.subscriberCount%> công khai</span> )</h2>
+    </div>
+  <!-- /.card-header -->
+  <!---pagination --->
+  <%if(pages>1){%>
+    <div class="card-tools" style="margin-top:5px;">
+      <ul class="pagination pagination-sm" id="besub-pagination">
+      <%  for(var i =1; i<=pages;i++){ %>
+        <li class="page-item
+          <%if(i===1){%>active<%}%>
+        " id="<%=i%>"><a href="/subscription/index?page=<%=i%>" class="page-link"><%=i%></a></li>
+      <%}%>
+      </ul>
+    </div>
+  <%}%>
+  <!-- form start -->
+  <form class="form-horizontal" method="post" action="/profile/cross-sub/setting">
+    <div class="card-body">
+       <table class="table table-striped">
+           <thead style="background-color:#CCFFFF">
+             <th class="text-success">
+               Logo
+             </th>
+              <th class="text-success">
+               Tên kênh
+             </th>
+           </thead>
+           <tbody>
+             <%data.forEach(function(channel){%>
+                <tr>
+                  <td><a href='https://www.youtube.com/channel/<%=channel.partnerId%>' target='_blank'><img src = '<%=channel.thumbnail%>' width="40px;" class ='img-circle'/></a></td>
+                  <td class='align-middle font-weight-bold'><a href='https://www.youtube.com/channel/<%=channel.channelId%>' target='_blank'><%=channel.title%></a>
+                  </td>
+                </tr>
+              <%})%>
+           </tbody>
+         </table>
+
+    </div>
+    <!-- /.card-body -->
+  </form>
+</div>
+
+
+<%-include('../layouts/templates/footer')%>
+<script>
+  $(document).ready(function(){
+    var selector = '.card-tools ul li';
+    var url = window.location.href;
+    var target = url.split('=')[1];
+    $('ul#besub-pagination li').each(function(i){
+      $(this).removeClass('active');
+    })
+    $('ul#besub-pagination li#'+target).addClass('active');
+
+  });
+</script>

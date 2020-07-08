@@ -1,0 +1,202 @@
+
+<div class="card card-info">
+  <div class="card-header">
+    <h2 class="card-title font-weight-bold text-uppercase">DANH SÁCH chờ subcribe chéo</h2>
+  </div>
+  <!-- /.card-header -->
+
+  <!-- form start -->
+  <div class="card-body">
+    <table class="table table-striped" id="wait-subs">
+      <tr style="background-color:#CCFFFF" class="row">
+        <th class="text-success text-center col-md-1 col-sm-2">
+          Logo
+        </th>
+        <th class="text-success col-md-7 col-sm-12 text-center">
+          Tên kênh
+        </th>
+        <th class="text-success text-center col-md-1 col-sm-2">
+          Uy tín
+        </th>
+        <th class="text-success col-md-2 col-sm-4 text-center">
+          Thời gian chờ
+        </th>
+        <th></th>
+      </tr>
+      <tbody>
+        <%data.forEach(function(channel){%>
+          <tr class="row">
+            <td class="text-center col-md-1 col-sm-12"><img src = '<%=channel.thumbnail%>' width="40px;" class ='img-circle'/></td>
+            <td class='text-info col-md-7 col-sm-12 text-center font-weight-bold'>
+              <%=channel.title%>
+            </td>
+            <td class="text-center col-md-1 col-sm-12 font-weight-bold text-warning"><%=channel.reputationPoint%></td>
+            <td class="text-center col-md-2 col-sm-12 font-weight-bold text-danger"><%=channel.minDurationView%></td>
+            <td class="col-md-1 col-sm-12 text-center"><a href="#" class="btn btn-danger btn-subcribe" data-duration="<%=channel.minDurationView%>"  id="<%=channel.channelId%>" data-video="<%=channel.recentVideos[0].videoId%>">Subcribe</a></td>
+          </tr>
+          <%})%>
+        </tbody>
+      </table>
+
+    </div>
+    <!-- /.card-body -->
+
+  </div>
+
+  <%-include('./modal')%>
+
+  <%-include('../layouts/templates/footer')%>
+
+  <script>
+  var time_in_minutes;
+  var current_time;
+  var deadline;
+    var tag = document.createElement('script');
+    tag.src = "https://www.youtube.com/iframe_api";
+    var firstScriptTag = document.getElementsByTagName('script')[0];
+    firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+
+    var player;
+    var ttt;
+    $('.btn-subcribe').click(async function(){
+      //get and set value to modal form
+      var channelId = $(this).attr('id');
+      $('#channelId').val(channelId);
+
+       time_in_minutes = $(this).attr('data-duration');
+       current_time = Date.parse(new Date());
+       deadline = new Date(current_time + time_in_minutes*60*1000);
+      run_clock('clockdiv',deadline);
+      $('#waittime').val(ttt);
+
+      //show modal
+      //disable escapse key to dispose Modal
+      $('.modal').modal({
+        show: true,
+        keyboard: false,
+        backdrop: 'static'
+      });
+
+      //hide button subscribe
+      $('#subscribe').hide();
+
+      //get video id
+      var videoId = $(this).attr('data-video');
+
+      player = new YT.Player('player', {
+        height: '450',
+        width: '100%',
+        videoId: videoId,
+        playerVars:{
+          'rel':0,
+          'controls':0,
+          'fs':1,
+          'modestbranding':1
+        },
+        events: {
+          'onReady': onPlayerReady,
+          'onStateChange': onPlayerStateChange
+        }
+      });
+
+    });
+
+    //dispose modal
+    $('#close-modal').click(()=>{
+      $('.modal').modal('toggle');
+      player.stopVideo();
+      location.reload();
+    });
+
+
+    function onPlayerReady(event) {
+      event.target.playVideo();
+    }
+
+    var done = false;
+    function onPlayerStateChange(event) {
+      if (event.data == YT.PlayerState.PLAYING && !done) {
+        // setTimeout(stopVideo, 60000);
+        done = true;
+      }else{
+        if(event.data == 1){
+          resume_clock();
+        }
+        else {
+          if (event.data == 2) {
+            pause_clock();
+          }
+        }
+
+      }
+
+    }
+
+    function stopVideo() {
+      player.stopVideo();
+      $('#subscribe').show();
+      $('#time-remain').hide();
+    }
+
+    $('.close').click(()=>{
+      player.stopVideo();
+      location.reload();
+    });
+
+
+
+
+
+    //Countdown
+
+
+
+    function time_remaining(endtime){
+      var t = Date.parse(endtime) - Date.parse(new Date());
+      var seconds = Math.floor( (t/1000) % 60 );
+      var minutes = Math.floor( (t/1000/60) % 60 );
+      var hours = Math.floor( (t/(1000*60*60)) % 24 );
+      var days = Math.floor( t/(1000*60*60*24) );
+      return {'total':t, 'days':days, 'hours':hours, 'minutes':minutes, 'seconds':seconds};
+    }
+
+    var timeinterval;
+    function run_clock(id,endtime){
+      var clock = document.getElementById(id);
+      function update_clock(){
+        var t = time_remaining(endtime);
+        if(t.seconds<10){
+          clock.innerHTML = '0'+t.minutes+':0'+t.seconds;
+        }else{
+          clock.innerHTML = '0'+t.minutes+':'+t.seconds;
+        }
+        if(t.total<=0){
+          $('#waitdiv').hide();
+          // clearInterval(timeinterval);
+          $('#subscribe').show();
+        }
+      }
+      update_clock(); // run function once at first to avoid delay
+      timeinterval = setInterval(update_clock,1000);
+    }
+
+    var paused = false; // is the clock paused?
+    var time_left; // time left on the clock when paused
+
+    function pause_clock(){
+      if(!paused){
+        paused = true;
+        clearInterval(timeinterval); // stop the clock
+        time_left = time_remaining(deadline).total; // preserve remaining time
+      }
+    }
+    function resume_clock(){
+      if(paused){
+        paused = false;
+        // update the deadline to preserve the amount of time remaining
+        deadline = new Date(Date.parse(new Date()) + time_left);
+        // start the clock
+        run_clock('clockdiv',deadline);
+      }
+    }
+  </script>

@@ -1,0 +1,40 @@
+<div class="card card-info">
+  <div class="card-header">
+    <h2 class="card-title font-weight-bold text-uppercase">Cài đặt sub chéo</h2>
+  </div>
+  <!-- /.card-header -->
+  <!-- form start -->
+  <form class="form-horizontal" method="post" action="/crosssub/setting">
+    <div class="card-body">
+      <h6><span class="font-weight-bold"><u>Lưu ý</u></span>: Khi <span class="text-danger">subcribe</span> mặc định sẽ lấy video mới nhất của bạn</h6>
+      <div class="form-group row">
+        <label for="inputEmail3" class="col-md-2 col-sm-6 col-form-label">Trạng thái sub chéo</label>
+        <div class="form-check col-md-2 col-sm-6" style="margin-top:10px;">
+          <input type="checkbox" class="form-check-input"
+             <%if(user.isActiveCrossSub){%>
+               checked
+              <%}%>
+            name="state" >
+          <label class="form-check-label font-weight-bold text-info" for="exampleCheck1">Kích hoạt sub chéo</label>
+        </div>
+        <label for="minDuration" class="col-md-3 col-sm-6 col-form-label">Thời gian xem tối thiểu trước khi sub</label>
+        <select class="form-control col-md-2 col-sm-6" name="minDuration">
+          <%for(var i =0; i<=5;i++){%>
+            <option value="<%=i%>" <%if(i===user.minDurationView){%>selected<%}%>>
+              0<%=i%> phút
+            </option>
+          <%}%>
+        </select>
+        <!-- Time picker end here-->
+        <div class="con-md-2 col-sm-12" style="margin-top:30px;">
+          <input type="submit" name="submit" value="Xác nhận" class="btn btn-success" style="display:block;width:40%; margin:0 auto;">
+        </div>
+      </div>
+    </div>
+    <!-- /.card-body -->
+  </form>
+</div>
+
+
+
+<%-include('../layouts/templates/footer')%>
