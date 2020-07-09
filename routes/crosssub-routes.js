@@ -9,6 +9,7 @@ PR = require('../functions/yt-promises');
 SUBSCRIPTION = require('../models/subscription-model');
 YA = require('../functions/youtube-api');
 POINT = require('../models/point-model');
+CPR = require('../functions/cross-promises');
 
 YA = require('../functions/youtube-api');
 
@@ -81,107 +82,55 @@ router.get('/crossing',authCheck,async function(req,res){
 
 router.get('/wait',authCheck,async function(req,res){
   let user = req.user;
-
-  // IDEA: fetch all channels that own channel subcribe to
-  //and they do it too
-  let cr = await SUBSCRIPTION.find({
-        $or:[
-          {_1stChannelId:user.channelId,_1stSub:true},
-          {_2ndChannelId:user.channelId,_2ndSub:true},
-          {_1stChannelId:user.channelId,_2ndSub:true},
-          {_2ndChannelId:user.channelId,_1stSub:true},
-          {_1stChannelId:user.channelId,_1stCanSub:true},
-          {_2ndChannelId:user.channelId,_2ndCanSub:true},
-          {_1stChannelId:user.channelId,_2ndCanSub:true},
-          {_2ndChannelId:user.channelId,_1stCanSub:true}
-        ]
-
-  });
-
-  let data = [];
-  if(cr.length){
-    data = await cr.map(c=>{
-      var t = {};
-      t['channelId']  = c._1stChannelId===user.channelId?c._2ndChannelId:c._1stChannelId;
-      t['title']      = c._1stChannelId===user.channelId?c._2ndTitle:c._1stTitle;
-      t['thumbnail']  = c._1stChannelId===user.channelId?c._2ndThumbnail:c._1stThumbnail
-      return t;
+  CPR.getAvailable(user.channelId)
+  .then( data =>{
+    return res.render('crosssub/wait',
+    {
+      user:user,
+      data:data
     });
-  }
-
-
-  //get all channel which difference from own channel in channel document
-  var channels = await Channel.find({channelId: {$nin:[user.channelId]},isActiveCrossSub:true})
-  .populate({
-    path: 'recentVideos',
-    options:{
-      limit:1,
-      sort: { created: -1}
-    }
-  });
-
-
-  //filter two array, just get channel that exist on step 2 but not step 1
-  var waitList = await channels.filter((ele)=>!data.find(({channelId})=>ele.channelId===channelId));
-   // console.log(waitList[0].recentVideos);
-  return res.render('crosssub/wait',
-  {
-    user:user,
-    data:waitList
-  });
+  })
+  .catch(err=>console.log(err));
 });
 
 router.post('/wait',authCheck,async (req,res)=>{
   var user = req.user;
 
   var channelId = req.body.channelId;
-  console.log('aaaaaa',channelId);
-  // YA.subscription_insert(channelId,user.access_token,user.refresh_token)
-  // .then(result => {
-  //   SUBSCRIPTION.findOne({
-  //     $or:[
-  //       {_1stChannelId:user.channelId,_2ndChannelId:channelId},
-  //       {_1stChannelId:channelId,_2ndChannelId:user.channelId}
-  //     ]
-  //   },(err,sub)=>{
-  //     if(err) return console.log(err);
-  //     if(sub){
-  //       if(sub._1stChannelId===user.channelId){
-  //         SUBSCRIPTION.findOneAndUpdate({_1stChannelId:sub._1stChannelId,_2ndChannelId:sub._2ndChannelId},{
-  //           _1stSub:true,
-  //           _1stCross:true
-  //         },(err,result)=>{
-  //           if(err) return console.log('update cross sub failed: '+err);
-  //
-  //         });
-  //       }else{
-  //         SUBSCRIPTION.findOneAndUpdate({_1stChannelId:sub._1stChannelId,_2ndChannelId:sub._2ndChannelId},{
-  //           _2ndSub:true,
-  //           _2ndCross:true
-  //         },(err,result)=>{
-  //           if(err) return console.log('update cross sub failed: '+err);
-  //         });
-  //       }
-  //     }else{
-  //       var title = result.data.snippet.title;
-  //       var thumbnail = result.data.snippet.thumbnails.default.url;
-  //       SUBSCRIPTION.create({
-  //         _1stChannelId:user.channelId,
-  //         _2ndChannelId:channelId,
-  //         _1stTitle:user.title,
-  //         _2ndTitle:title,
-  //         _1stThumbnail:user.thumbnail,
-  //         _2ndThumbnail:thumbnail,
-  //         _1stSub:true,
-  //         _1stCross:true
-  //       },(err,result)=>{
-  //         if(err) return console.log('insert subscription failed: '+err);
-  //       });
-  //     }
-  //   });
-  //   return res.redirect('/crosssub/wait');
-  // })
-  // .catch(err=>console.log('failed: ',err));
+  var waittime = req.body.await;
+
+  // insert(_1stChannelId,_2stChannelId,_1stTitle,_2ndTitle,_1stThumbnail,_2ndThumbnail,_point,_waittime){
+
+  YA.subscription_insert(channelId,user.access_token,user.refresh_token)
+  .then(async sub=>{
+    console.log('subscribe successfully');
+    var channelId = sub.data.snippet.resourceId.channelId;
+    var title = sub.data.snippet.title;
+    var thumbnail = sub.data.snippet.thumbnails.default.url;
+    SUBSCRIPTION.create({
+      _1stChannelId:user.channelId,
+      _2ndChannelId:channelId,
+      _1stTitle:user.title,
+      _2ndTitle:title,
+      _1stThumbnail:user.thumbnail,
+      _2ndThumbnail:thumbnail,
+      _1stSub:true,
+      _1stCross:true,
+      _point:20,
+      _waittime:waittime
+    },(err,result)=>{
+      if(err) return log('insert cross sub failed: '+err);
+      CPR.getAvailable(user.channelId)
+      .then( data =>{
+        return res.render('crosssub/wait',
+        {
+          user:user,
+          data:data
+        });
+      }).catch(err=>console.log(err));
+    })
+  })
+  .catch(err => console.log(err));
 });
 
 

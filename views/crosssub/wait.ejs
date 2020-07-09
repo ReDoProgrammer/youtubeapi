@@ -48,9 +48,9 @@
   <%-include('../layouts/templates/footer')%>
 
   <script>
-  var time_in_minutes;
-  var current_time;
-  var deadline;
+    var time_in_minutes;
+    var current_time;
+    var deadline;
     var tag = document.createElement('script');
     tag.src = "https://www.youtube.com/iframe_api";
     var firstScriptTag = document.getElementsByTagName('script')[0];
@@ -63,10 +63,10 @@
       var channelId = $(this).attr('id');
       $('#channelId').val(channelId);
 
-       time_in_minutes = $(this).attr('data-duration');
-       current_time = Date.parse(new Date());
-       deadline = new Date(current_time + time_in_minutes*60*1000);
-      run_clock('clockdiv',deadline);
+      time_in_minutes = $(this).attr('data-duration');
+      current_time = Date.parse(new Date());
+      deadline = new Date(current_time + time_in_minutes*60*1000);
+      $('#await').val($(this).attr('data-duration'));
       $('#waittime').val(ttt);
 
       //show modal
@@ -78,7 +78,7 @@
       });
 
       //hide button subscribe
-      $('#subscribe').hide();
+      // $('#subscribe').hide();
 
       //get video id
       var videoId = $(this).attr('data-video');
@@ -111,6 +111,7 @@
 
     function onPlayerReady(event) {
       event.target.playVideo();
+      run_clock('clockdiv',deadline);
     }
 
     var done = false;
