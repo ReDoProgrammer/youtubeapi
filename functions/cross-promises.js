@@ -6,14 +6,14 @@ module.exports = class Cross{
       try {
         let subs = await SUBSCRIPTION.find({
           $or:[
-            {_1stChannelId:channelId,_1stSub:true},
-            {_2ndChannelId:channelId,_2ndSub:true},
-            {_1stChannelId:channelId,_2ndSub:true},
-            {_2ndChannelId:channelId,_1stSub:true},
-            {_1stChannelId:channelId,_1stCanSub:true},
-            {_2ndChannelId:channelId,_2ndCanSub:true},
-            {_1stChannelId:channelId,_2ndCanSub:true},
-            {_2ndChannelId:channelId,_1stCanSub:true}
+            {_1stChannelId:channelId,_1stSub:true},//if own channel at the first column and subscribe to other
+            {_2ndChannelId:channelId,_2ndSub:true},//if own channel at the second column and subscribe to other
+            {_1stChannelId:channelId,_2ndSub:true},//own channel at the first column and be subscribed
+            {_2ndChannelId:channelId,_1stSub:true},//own channel at the second column and be subscribed
+            {_1stChannelId:channelId,_1stCanSub:true},//own channel at the first column but unsubscribed
+            {_2ndChannelId:channelId,_2ndCanSub:true},//own channel at the second column but unsubscribed
+            {_1stChannelId:channelId,_2ndCanSub:true},//own channel at the first column but be unsubscribed
+            {_2ndChannelId:channelId,_1stCanSub:true}//own channel at the second column but be unsubscribed
           ]
         });
 
