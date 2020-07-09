@@ -24,8 +24,8 @@ function authCheck(req, res, next) {
 
 router.get('/setting',authCheck,async function(req,res){
   const user =req.user;
+  if(!user.recentVideos.length){
 
-  if(!user.recentVideos){
     return res.render('crosssub/unablecross',{user:user});
   }
   return res.render('crosssub/setting',{user:user});
