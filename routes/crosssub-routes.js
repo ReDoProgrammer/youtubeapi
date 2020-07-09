@@ -25,14 +25,12 @@ function authCheck(req, res, next) {
 router.get('/setting',authCheck,async function(req,res){
   const user =req.user;
   if(!user.recentVideos.length){
-
     return res.render('crosssub/unablecross',{user:user});
   }
   return res.render('crosssub/setting',{user:user});
 });
 router.post('/setting',authCheck,function(req,res){
   var user = req.user;
-
   try{
     state = req.body.state?true:false;
     minduration = req.body.minDuration;
@@ -52,6 +50,9 @@ router.post('/setting',authCheck,function(req,res){
 
 router.get('/crossing',authCheck,async function(req,res){
   let user = req.user;
+  if(!user.isActiveCrossSub){
+    return res.redirect('/crosssub/setting');
+  }
   var page = req.query.page||1;
   let cr = await SUBSCRIPTION.find({
     $or:[
@@ -82,6 +83,9 @@ router.get('/crossing',authCheck,async function(req,res){
 
 router.get('/wait',authCheck,async function(req,res){
   let user = req.user;
+  if(!user.isActiveCrossSub){
+    return res.redirect('/crosssub/setting');
+  }
   CPR.getAvailable(user.channelId)
   .then( data =>{
     return res.render('crosssub/wait',
@@ -131,6 +135,16 @@ router.post('/wait',authCheck,async (req,res)=>{
     })
   })
   .catch(err => console.log(err));
+});
+
+router.get('/canceled',authCheck,(req,res)=>{
+  var user = req.user;
+  if(!user.isActiveCrossSub){
+    return res.redirect('/crosssub/setting');
+  }
+  return res.render('crosssub/canceled',{
+    user:user
+  });
 });
 
 
