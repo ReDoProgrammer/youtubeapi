@@ -21,6 +21,7 @@ coinsRoutes = require('./routes/coins-routes');
 
 mongoose.set('useNewUrlParser', true);
 mongoose.set('useFindAndModify', false);
+mongoose.set('useUnifiedTopology', true);
 mongoose.connect(config.dbURL,()=>{
   console.log('connect database successfully');
 });

@@ -3,7 +3,7 @@ const Schema = mongoose.Schema;
 
 
 const channelSchema = new Schema({
-	_id:{type: String, unique:true},
+	profileId:{type: String, default:''},
 	channelId:{type: String,default:''},
 	title: String,
 	thumbnail:String,
