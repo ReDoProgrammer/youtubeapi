@@ -21,10 +21,10 @@ function authCheck(req, res, next) {
 
 router.get('/', authCheck, async function(req, res) {
   const user = req.user;
-  PR.updateProfile(user._id,user.access_token,user.refresh_token)
+  PR.updateProfile(user.profileId,user.access_token,user.refresh_token)
   .then(ch=>Promise.all(
     [
-      //get 4 lated videos and statistic them
+    //   //get 4 lated videos and statistic them
       PR.getLatedVideos(ch.recentVideos,ch.relatedUploadList,user.access_token,user.refresh_token)
       .then(videos=>PR.setVideosSats(videos,ch.access_token,ch.refresh_token))//statistic video infor as:like,dislike,view,...
       .then(videos=>PR.setOwner(videos,ch.channelId)),//set owner for the lated videos
@@ -32,8 +32,8 @@ router.get('/', authCheck, async function(req, res) {
       PR.getSub(ch.channelId,ch.access_token,ch.refresh_token)//return list of the channels that owner subcirbes to
       .then(subs=>PR.setsubscription(ch,subs,false))//insert the list above into database
        .then(subs=>PR.checkUnsubscribe(ch,subs,false)),
-
-      ////get all channels which subscribe to own channel
+      //
+      // ////get all channels which subscribe to own channel
       PR.getBeSub(ch.channelId,ch.access_token,ch.refresh_token)//return list of channels that subscribe to own channel
       .then(beSubs=>PR.setsubscription(ch,beSubs,true))//insert above list into data
       .then(beSubs=> PR.checkUnsubscribe(ch,beSubs,true))
@@ -41,7 +41,7 @@ router.get('/', authCheck, async function(req, res) {
   ))
 
   .then(async (result)=>{
-    // console.log(result[1]) // { name: 'cherries', quantity: 5 }
+    // console.log(result.data.items);
     var data = await Channel.findOne({channelId:result[0].channelId}).populate('recentVideos');
     return res.render('profile/index',{user:data,videos:data.recentVideos});
   })

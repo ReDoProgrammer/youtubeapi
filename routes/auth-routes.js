@@ -1,6 +1,7 @@
 const router = require('express').Router();
 const passport = require('passport'),
 {google} = require('googleapis');
+const Channel = require('../models/channel-model');
 
 
 router.get('/google', passport.authenticate('google', {
@@ -17,7 +18,7 @@ passport.authenticate('google', {
   successRedirect: '/profile',
   failureRedirect: '/'
 }));
-router.get('/google/logout',function(req,res){
+router.get('/google/logout',async function(req,res){
   req.logout();
   return res.redirect('/');
 });

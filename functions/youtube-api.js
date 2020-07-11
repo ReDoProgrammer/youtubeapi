@@ -4,22 +4,23 @@ OAuth2 = google.auth.OAuth2;
 module.exports = class YTAPI{
 
 	static overview(part,access_token,refresh_token){
-		try{
-			var oauth2Client = new OAuth2(
-				config.clientID,
-				config.clientSecret,
-				config.callbackURL
-			);
+		return new Promise((resolve,reject)=>{
+			try{
+				var oauth2Client = new OAuth2(
+					config.clientID,
+					config.clientSecret,
+					config.callbackURL
+				);
+				oauth2Client.credentials = { access_token: access_token, refresh_token: refresh_token };
+				return resolve(google.youtube({
+					version: 'v3',
+					auth: oauth2Client
+				}).channels.list(part)) ;
+			}catch(err){
+				return reject('get overview failed: '+err);
+			}
+		});
 
-			oauth2Client.credentials = { access_token: access_token, refresh_token: refresh_token };
-			return google.youtube({
-				version: 'v3',
-				auth: oauth2Client
-			}).channels.list(part);
-		}catch(err){
-			console.log('channel overview list query failed: '+err);
-			return null;
-		}
 	};
 
 	static async subscriptions_list(part,access_token,refresh_token){

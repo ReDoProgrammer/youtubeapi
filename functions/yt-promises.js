@@ -8,35 +8,24 @@ module.exports = class Promises{
 
 	//update channel info as: view count,like count, subscribe count,....
 	//return related playlistId
-	static updateProfile =(id,access_token,refresh_token)=>{
-		return new Promise((resolve,reject)=>{
+	static updateProfile =(profileId,access_token,refresh_token)=>{
+		return new Promise(async (resolve,reject)=>{
 			try {
 				var part = {
 					part:'contentDetails,statistics',
 					mine:true
 				}
-				YT.overview(part,access_token,refresh_token).then(result=>{
-					Channel.findOneAndUpdate(
-						{_id:id},
-						{
-							channelId:result.data.items[0].id,
-							relatedUploadList:result.data.items[0].contentDetails.relatedPlaylists.uploads,
-							viewCount:result.data.items[0].statistics.viewCount,
-							commentCount: result.data.items[0].statistics.commentCount,
-							subscriberCount:result.data.items[0].statistics.subscriberCount,
-							hiddenSubscriberCount:result.data.items[0].statistics.hiddenSubscriberCount,
-							videoCount:result.data.items[0].statistics.videoCount
-						},
-						{
-							new:true
-						},
-						(err,ch)=>{
-							if(err) return reject('update profile failed: '+err);
-							RV.deleteMany({channelId:ch.channelId});
-							return resolve(ch);
-						}
-					);
-				});
+				var result =await YT.overview(part,access_token,refresh_token);
+				Channel.findOneAndUpdate({profileId:profileId},{
+					channelId:result.data.items[0].id,
+					viewCount:result.data.items[0].statistics.viewCount,
+					subscriberCount:result.data.items[0].statistics.subscriberCount,
+					videoCount:result.data.items[0].statistics.videoCount,
+					relatedUploadList:result.data.items[0].contentDetails.relatedPlaylists.uploads
+				},(err,ch)=>{
+					if(err) return reject('update channel profile failed: '+err);
+					return resolve(ch);
+				})
 			} catch (e) {
 				return reject(new Error('Your channel is not exist: '+e));
 			}
