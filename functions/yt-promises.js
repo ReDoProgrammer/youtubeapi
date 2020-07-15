@@ -8,24 +8,31 @@ module.exports = class Promises{
 
 	//update channel info as: view count,like count, subscribe count,....
 	//return related playlistId
-	static updateProfile =(profileId,access_token,refresh_token)=>{
-		return new Promise(async (resolve,reject)=>{
+	static initialChannel =(googleId,access_token,refresh_token)=>{
+		return new Promise((resolve,reject)=>{
 			try {
-				var part = {
-					part:'contentDetails,statistics',
-					mine:true
-				}
-				var result =await YT.overview(part,access_token,refresh_token);
-				Channel.findOneAndUpdate({profileId:profileId},{
-					channelId:result.data.items[0].id,
-					viewCount:result.data.items[0].statistics.viewCount,
-					subscriberCount:result.data.items[0].statistics.subscriberCount,
-					videoCount:result.data.items[0].statistics.videoCount,
-					relatedUploadList:result.data.items[0].contentDetails.relatedPlaylists.uploads
-				},(err,ch)=>{
-					if(err) return reject('update channel profile failed: '+err);
-					return resolve(ch);
+				 YT.overview(access_token,refresh_token)
+				.then(async result=>{
+					//initialize channel information
+					await Channel.findOneAndUpdate({googleId:googleId},
+						{
+						channelId:result.data.items[0].id,
+						subscriberCount:result.data.items[0].statistics.subscriberCount,
+						videoCount:result.data.items[0].statistics.videoCount,
+						viewCount:result.data.items[0].statistics.viewCount,
+						commentCount:result.data.items[0].statistics.commentCount,
+						hiddenSubscriberCount:result.data.items[0].statistics.hiddenSubscriberCount,
+						relatedUploadList:result.data.items[0].contentDetails.relatedPlaylists.uploads
+					},
+					{new: true},//return updated document
+					(err,ch)=>{
+						if(err) reject(new Error('update channel failed: '+err));
+						return resolve(ch);
+					});
 				})
+				.catch(err=>{
+					return reject(new Error('get channel overview failed: '+err))
+				});
 			} catch (e) {
 				return reject(new Error('Your channel is not exist: '+e));
 			}
@@ -144,7 +151,7 @@ module.exports = class Promises{
 				});
 				return resolve(subs);
 			}catch(ex){
-				return reject('get sublist failed: ',ex);
+				return reject('get sublist failed: '+ex);
 			}
 
 		});

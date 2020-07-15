@@ -21,15 +21,14 @@ function authCheck(req, res, next) {
 
 router.get('/', authCheck, async function(req, res) {
   const user = req.user;
-  PR.updateProfile(user.profileId,user.access_token,user.refresh_token)
-
+  await PR.initialChannel(user.googleId,user.access_token,user.refresh_token)
+  // .then(ch=>console.log(ch))
   .then(ch=>Promise.all(
     [
-
       //get all channels that own channel subscribe to
       PR.getSub(ch.channelId,ch.access_token,ch.refresh_token)//return list of the channels that owner subcirbes to
       .then(subs=>PR.setsubscription(ch,subs,false))//insert the list above into database
-       .then(subs=>PR.checkUnsubscribe(ch,subs,false)),
+      .then(subs=>PR.checkUnsubscribe(ch,subs,false)),
       //
       // ////get all channels which subscribe to own channel
       PR.getBeSub(ch.channelId,ch.access_token,ch.refresh_token)//return list of channels that subscribe to own channel
@@ -39,9 +38,10 @@ router.get('/', authCheck, async function(req, res) {
   ))
 
   .then(async (result)=>{
-     // console.log(result);
+    // console.log(result);
     // var data = await Channel.findOne({channelId:result[0].channelId});
-     return res.render('profile/index',{user:req.user});
+    var chanel =await Channel.findOne({googleId:user.googleId});
+    return res.render('profile/index',{user:chanel});
   })
   .catch(err=>{
     console.log(err+'');

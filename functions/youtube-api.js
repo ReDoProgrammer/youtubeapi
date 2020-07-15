@@ -3,7 +3,7 @@ const {google} = require('googleapis');
 OAuth2 = google.auth.OAuth2;
 module.exports = class YTAPI{
 
-	static overview(part,access_token,refresh_token){
+	static overview(access_token,refresh_token){
 		return new Promise((resolve,reject)=>{
 			try{
 				var oauth2Client = new OAuth2(
@@ -11,6 +11,10 @@ module.exports = class YTAPI{
 					config.clientSecret,
 					config.callbackURL
 				);
+				var part = {
+					part:'contentDetails,statistics',
+					mine:true
+				}
 				oauth2Client.credentials = { access_token: access_token, refresh_token: refresh_token };
 				return resolve(google.youtube({
 					version: 'v3',

@@ -5,15 +5,15 @@ const Channel = require('../models/channel-model');
 
 passport.serializeUser(function(channel, done) {
   try {
-    done(null, channel.profileId);
+    done(null, channel.googleId);
   } catch (e) {
     done('serialize user failed: '+e);
   }
 });
 
-passport.deserializeUser(function(profileId, done) {
+passport.deserializeUser(function(googleId, done) {
   try {
-    Channel.findOne({profileId:profileId},(err, channel) => {
+    Channel.findOne({googleId:googleId},(err, channel) => {
       done(err, channel);
     });
   } catch (e) {
@@ -29,13 +29,13 @@ passport.use(new GoogleStrategy({
 function(access_token, refresh_token, profile, done) {
   process.nextTick(function() {
     try {
-      Channel.findOne({ profileId: profile.id }, function(err, res) {
+      Channel.findOne({ googleId: profile.id }, function(err, res) {
         if (err)  return done(err);
         if (res) {
           //if channel found - exists
           try {
             Channel.findOneAndUpdate({
-              profileId:res.profileId
+              googleId:res.googleId
             },{
               lastLogin:new Date().setHours( new Date().getHours() + 7),
               loginTimes:++res.loginTimes,
@@ -53,7 +53,7 @@ function(access_token, refresh_token, profile, done) {
         } else {
           try {
             Channel.create({
-              profileId: profile.id,
+              googleId: profile.id,
               access_token: access_token,
               refresh_token: refresh_token,
               title: profile.displayName,
