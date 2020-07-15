@@ -18,21 +18,7 @@ EEEEEE">
 
 <script src="/plugins/jquery-toast/js/jquery.toast.js"></script>
 
-<script>
-  <%if(typeof msg !== 'undefined'){%>
-    $.toast({
-      heading: '<%=msg.heading%>',
-      text: '<%=msg.text%>',
-      icon: '<%=msg.icon%>'
-    });
-    <%if(msg.url.length>0){%>
-      setTimeout(function () {
-        window.location.href = "<%=msg.url%>"; //will redirect to your blog page (an ex: blog.html)
-      }, 1000); //will call the function after 2 secs.
 
-      <%}%>
-      <%}%>
-    </script>
 
   </body>
   </html>

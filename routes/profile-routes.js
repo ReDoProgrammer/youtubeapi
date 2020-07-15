@@ -22,12 +22,10 @@ function authCheck(req, res, next) {
 router.get('/', authCheck, async function(req, res) {
   const user = req.user;
   PR.updateProfile(user.profileId,user.access_token,user.refresh_token)
+
   .then(ch=>Promise.all(
     [
-    //   //get 4 lated videos and statistic them
-      PR.getLatedVideos(ch.recentVideos,ch.relatedUploadList,user.access_token,user.refresh_token)
-      .then(videos=>PR.setVideosSats(videos,ch.access_token,ch.refresh_token))//statistic video infor as:like,dislike,view,...
-      .then(videos=>PR.setOwner(videos,ch.channelId)),//set owner for the lated videos
+
       //get all channels that own channel subscribe to
       PR.getSub(ch.channelId,ch.access_token,ch.refresh_token)//return list of the channels that owner subcirbes to
       .then(subs=>PR.setsubscription(ch,subs,false))//insert the list above into database
@@ -41,9 +39,9 @@ router.get('/', authCheck, async function(req, res) {
   ))
 
   .then(async (result)=>{
-    // console.log(result.data.items);
-    var data = await Channel.findOne({channelId:result[0].channelId}).populate('recentVideos');
-    return res.render('profile/index',{user:data,videos:data.recentVideos});
+     // console.log(result);
+    // var data = await Channel.findOne({channelId:result[0].channelId});
+     return res.render('profile/index',{user:req.user});
   })
   .catch(err=>{
     console.log(err+'');

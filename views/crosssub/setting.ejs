@@ -11,30 +11,45 @@
         <label for="inputEmail3" class="col-md-2 col-sm-6 col-form-label">Trạng thái sub chéo</label>
         <div class="form-check col-md-2 col-sm-6" style="margin-top:10px;">
           <input type="checkbox" class="form-check-input"
-             <%if(user.isActiveCrossSub){%>
-               checked
-              <%}%>
+          <%if(user.isActiveCrossSub){%>
+            checked
+            <%}%>
             name="state" >
-          <label class="form-check-label font-weight-bold text-info" for="exampleCheck1">Kích hoạt sub chéo</label>
+            <label class="form-check-label font-weight-bold text-info" for="exampleCheck1">Kích hoạt sub chéo</label>
+          </div>
+          <label for="minDurationView" class="col-md-3 col-sm-6 col-form-label">Thời gian xem tối thiểu trước khi sub</label>
+          <select class="form-control col-md-2 col-sm-6" name="minDurationView">
+            <%for(var i =0; i<=5;i++){%>
+              <option value="<%=i%>" <%if(i===user.minDurationView){%>selected<%}%>>
+                0<%=i%> phút
+              </option>
+              <%}%>
+            </select>
+            <!-- Time picker end here-->
+            <div class="con-md-2 col-sm-12" style="margin-top:30px;">
+              <input type="submit" name="submit" value="Xác nhận" class="btn btn-success" style="display:block;width:40%; margin:0 auto;">
+            </div>
+          </div>
         </div>
-        <label for="minDuration" class="col-md-3 col-sm-6 col-form-label">Thời gian xem tối thiểu trước khi sub</label>
-        <select class="form-control col-md-2 col-sm-6" name="minDuration">
-          <%for(var i =0; i<=5;i++){%>
-            <option value="<%=i%>" <%if(i===user.minDurationView){%>selected<%}%>>
-              0<%=i%> phút
-            </option>
-          <%}%>
-        </select>
-        <!-- Time picker end here-->
-        <div class="con-md-2 col-sm-12" style="margin-top:30px;">
-          <input type="submit" name="submit" value="Xác nhận" class="btn btn-success" style="display:block;width:40%; margin:0 auto;">
-        </div>
-      </div>
+        <!-- /.card-body -->
+      </form>
     </div>
-    <!-- /.card-body -->
-  </form>
-</div>
 
 
 
-<%-include('../layouts/templates/footer')%>
+    <%-include('../layouts/templates/footer')%>
+    <script>
+      <%if(typeof msg !== 'undefined'){%>
+        $.toast({
+          heading: '<%=msg.heading%>',
+          text: '<%=msg.text%>',
+          icon: '<%=msg.icon%>'
+        });
+        <%if(msg.url.length>0){%>
+          setTimeout(function () {
+            window.location.href = "<%=msg.url%>"; //will redirect to your blog page (an ex: blog.html)
+          }, <%=msg.delay%>); //will call the function after 2 secs.
+
+          <%}%>
+      <%}%>
+</script>

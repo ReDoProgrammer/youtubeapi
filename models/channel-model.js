@@ -23,7 +23,7 @@ const channelSchema = new Schema({
 	relatedUploadList:{type:String,default:''},
 	isActiveCrossSub:{type:Boolean,default:false},//cross sub state.
 	minDurationView:{type:Number,default:0},//minimize duration must view before show subcribe button,
-	recentVideos:[{type:Schema.Types.ObjectId,ref:'recentvideos'}]
+	videoId:{type: String, default:''}
 });
 
 

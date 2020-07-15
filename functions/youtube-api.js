@@ -74,22 +74,32 @@ module.exports = class YTAPI{
 		});
 
 	}
-	static async playlistitems(part,access_token,refresh_token){
-		try{
-			var oauth2Client = new OAuth2(
-				config.clientID,
-				config.clientSecret,
-				config.callbackURL
-			);
-			oauth2Client.credentials = { access_token: access_token, refresh_token: refresh_token };
-			return await google.youtube({
-				version: 'v3',
-				auth: oauth2Client
-			}).playlistItems.list(part);
-		}catch(err){
-			console.log('playlistitems list query failed: '+err);
-			return null;
-		}
+
+
+	static async playlistitems(playlistId,access_token,refresh_token){
+		return new Promise((resolve,reject)=>{
+			try{
+				var oauth2Client = new OAuth2(
+					config.clientID,
+					config.clientSecret,
+					config.callbackURL
+				);
+				oauth2Client.credentials = { access_token: access_token, refresh_token: refresh_token };
+				var part = {
+					part:'snippet',
+					playlistId:playlistId,
+					maxResults:1
+				};
+				return resolve(
+					google.youtube({
+						version: 'v3',
+						auth: oauth2Client
+					}).playlistItems.list(part)
+				);
+			}catch(err){
+				return reject(new Error('get latest video failed: '+err));
+			}
+		});
 	}
 
 	static async video(part,access_token,refresh_token){
