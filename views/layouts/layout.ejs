@@ -139,7 +139,7 @@
         <!-- Brand Logo -->
         <a href="https://www.youtube.com/channel/<%=user.channelId%>" target="_blank">
           <span class="text-danger">
-          <img src="<%=user.thumbnail%>" class="image img-circle elevation-2" width="25%" alt="User Image">
+            <img src="<%=user.thumbnail%>" class="image img-circle elevation-2" width="25%" alt="User Image">
           </span>
           <span class="brand-text font-weight-light">
             <%=user.title%>
@@ -150,192 +150,201 @@
         <div class="sidebar">
           <!-- Sidebar user panel (optional) -->
 
-              <!-- Sidebar Menu -->
-              <nav class="mt-2">
-                <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
-                  <!-- Add icons to the links using the .nav-icon class
-                  with font-awesome or any other icon font library -->
+          <!-- Sidebar Menu -->
+          <nav class="mt-2">
+            <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
+              <!-- Add icons to the links using the .nav-icon class
+              with font-awesome or any other icon font library -->
+              <li class="nav-item">
+                <a href="/profile" class="nav-link active">
+                  <span style="color:white; font-size:20px;"><i class="fa fa-telegram" aria-hidden="true"></i></span>
+                  <p class="font-weight-bold">
+                    Overview
+                  </p>
+                </a>
+
+              </li>
+              <li class="nav-item has-treeview menu-close">
+                <a href="#" class="nav-link">
+                  <p class="font-weight-bold">
+                    <span class="text-warning"><i class="fa fa-flag" aria-hidden="true"></i></span>
+                    Subscriptions
+                    <i class="right fa fa-angle-left" aria-hidden="true"></i>
+                  </p>
+                </a>
+                <ul class="nav nav-treeview" style="border-style: solid; border-width: thin;border-color: coral; border-radius: 5px;">
                   <li class="nav-item">
-                    <a href="/profile" class="nav-link active">
-                      <span style="color:white; font-size:20px;"><i class="fa fa-telegram" aria-hidden="true"></i></span>
-                      <p class="font-weight-bold">
-                        Overview
-                      </p>
+                    <a href="/subscription/sub" class="nav-link">
+                      <span class="text-warning"><i class="fa fa-check" aria-hidden="true"></i></span>
+                      <p>Kênh bạn subscribe</p>
                     </a>
-
                   </li>
-                  <li class="nav-item has-treeview menu-close">
+                  <li class="nav-item">
                     <a href="#" class="nav-link">
-                      <p class="font-weight-bold">
-                        <span class="text-warning"><i class="fa fa-flag" aria-hidden="true"></i></span>
-                        Subscriptions
-                        <i class="right fa fa-angle-left" aria-hidden="true"></i>
-                      </p>
+                      <span class="text-warning"><i class="fa fa-folder-open" aria-hidden="true"></i></span>
+                      <p>Kênh subscribe bạn</p>
+                      <i class="right fa fa-angle-left" aria-hidden="true"></i>
                     </a>
-                    <ul class="nav nav-treeview" style="border-style: solid; border-width: thin;border-color: coral; border-radius: 5px;">
+                    <ul class="nav nav-treeview" style="margin-left: 15px;">
                       <li class="nav-item">
-                        <a href="/subscription/sub" class="nav-link">
-                          <span class="text-warning"><i class="fa fa-check" aria-hidden="true"></i></span>
-                          <p>Kênh bạn subscribe</p>
+                        <a href="/subscription/recent" class="nav-link">
+                          <p>Sub mới</p>
                         </a>
                       </li>
                       <li class="nav-item">
-                        <a href="#" class="nav-link">
-                          <span class="text-warning"><i class="fa fa-folder-open" aria-hidden="true"></i></span>
-                          <p>Kênh subscribe bạn</p>
-                          <i class="right fa fa-angle-left" aria-hidden="true"></i>
+                        <a href="/subscription/unsubscribe" class="nav-link">
+                          <p>Bị hủy sub</p>
                         </a>
-                        <ul class="nav nav-treeview" style="margin-left: 15px;">
-                          <li class="nav-item">
-                            <a href="/subscription/recent" class="nav-link">
-                              <p>Sub mới</p>
-                            </a>
-                          </li>
-                          <li class="nav-item">
-                            <a href="/subscription/unsubscribe" class="nav-link">
-                              <p>Bị hủy sub</p>
-                            </a>
-                          </li>
-                          <li class="nav-item">
-                            <a href="/subscription/index" class="nav-link">
-                              <p>Tất cả</p>
-                            </a>
-                          </li>
-                        </ul>
                       </li>
                       <li class="nav-item">
-                        <a href="#" class="nav-link">
-                          <span class="text-warning"><i class="fa fa-folder-open" aria-hidden="true"></i></span>
-                          <p>Sub chéo</p>
-                          <i class="right fa fa-angle-left" aria-hidden="true"></i>
+                        <a href="/subscription/index" class="nav-link">
+                          <p>Tất cả</p>
                         </a>
-                        <ul class="nav nav-treeview" style="margin-left: 15px;">
-                          <li class="nav-item">
-                            <a href="/crosssub/setting" class="nav-link">
-                              <span class="text-info"><i class="fa fa-gear (alias)" aria-hidden="true"></i></span>
-                              <p>Cài đặt</p>
-                            </a>
-                          </li>
-                          <li class="nav-item">
-                            <a href="/crosssub/wait" class="nav-link">
-                              <span class="text-primary"><i class="fa fa-spinner" aria-hidden="true"></i></span>
-                              <p>Kênh đăng ký chéo</p>
-                            </a>
-                          </li>
-                          <li class="nav-item">
-                            <a href="/crosssub/crossing" class="nav-link">
-                              <span class="text-success"><i class="fa fa-exchange" aria-hidden="true"></i></span>
-                              <p>Đang chéo</p>
-                            </a>
-                          </li>
-                          <li class="nav-item">
-                            <a href="/crosssub/wait" class="nav-link">
-                              <span class="text-info"><i class="fa  fa-mail-reply (alias)" aria-hidden="true"></i></span>
-                              <p>Đợi trả sub</p>
-                            </a>
-                          </li>
-                          <li class="nav-item">
-                            <a href="/crosssub/canceled" class="nav-link">
-                              <span class="text-danger"><i class="fa  fa-meh-o" aria-hidden="true"></i></span>
-                              <p>Bị hủy</p>
-                            </a>
-                          </li>
-
-                        </ul>
                       </li>
-
                     </ul>
                   </li>
-                  <li class="nav-item has-treeview menu-close">
+                  <li class="nav-item">
                     <a href="#" class="nav-link">
-                      <i class="glyphicon glyphicon-home"></i>
-                      <p class="font-weight-bold">
-                        <span class="text-warning"><i class="fa fa-diamond" aria-hidden="true"></i></span>
-                        Coins
-                        <i class="right fa fa-angle-left" aria-hidden="true"></i>
-                      </p>
+                      <span class="text-warning"><i class="fa fa-folder-open" aria-hidden="true"></i></span>
+                      <p>Sub chéo</p>
+                      <i class="right fa fa-angle-left" aria-hidden="true"></i>
                     </a>
-                    <ul class="nav nav-treeview" style="border-style: solid; border-width: thin;border-color: coral; border-radius: 5px;">
+                    <ul class="nav nav-treeview" style="margin-left: 15px;">
                       <li class="nav-item">
-                        <a href="/coins/subscribe" class="nav-link">
-                          <span class="text-warning"><i class="fa fa-bookmark-o" aria-hidden="true"></i></span>
-                          <p>subscribe</p>
+                        <a href="/crosssub/setting" class="nav-link">
+                          <span class="text-info"><i class="fa fa-gear (alias)" aria-hidden="true"></i></span>
+                          <p>Cài đặt</p>
                         </a>
                       </li>
                       <li class="nav-item">
-                        <a href="/coins/view" class="nav-link">
-                          <span class="text-info"><i class="fa fa-eye" aria-hidden="true"></i></span>
-                          <p> View</p>
+                        <a href="/crosssub/wait" class="nav-link">
+                          <span class="text-primary"><i class="fa fa-spinner" aria-hidden="true"></i></span>
+                          <p>Kênh đăng ký chéo</p>
                         </a>
                       </li>
                       <li class="nav-item">
-                        <a href="/coins/like" class="nav-link">
-                          <span class="text-success"><i class="fa fa-thumbs-up" aria-hidden="true"></i></span>
-                          <p>Like</p>
+                        <a href="/crosssub/crossing" class="nav-link">
+                          <span class="text-success"><i class="fa fa-exchange" aria-hidden="true"></i></span>
+                          <p>Đang chéo</p>
                         </a>
                       </li>
                       <li class="nav-item">
-                        <a href="/coins/ads" class="nav-link">
-                          <span class="text-danger"><i class="fa fa-bullhorn" aria-hidden="true"></i></span>
-                          <p>Advertisment</p>
+                        <a href="/crosssub/wait" class="nav-link">
+                          <span class="text-info"><i class="fa  fa-mail-reply (alias)" aria-hidden="true"></i></span>
+                          <p>Đợi trả sub</p>
                         </a>
                       </li>
                       <li class="nav-item">
-                        <a href="/coins/cash" class="nav-link">
-                          <span class="text-warning"><i class="fa  fa-credit-card" aria-hidden="true"></i></span>
-                          <p>Cash</p>
+                        <a href="/crosssub/canceled" class="nav-link">
+                          <span class="text-danger"><i class="fa  fa-meh-o" aria-hidden="true"></i></span>
+                          <p>Bị hủy</p>
                         </a>
                       </li>
 
-                    </ul>
-                  </li>
-                  <li class="nav-item has-treeview menu-close">
-                    <a href="#" class="nav-link">
-                      <i class="glyphicon glyphicon-home"></i>
-                      <p class="font-weight-bold">
-                        <span class="text-warning"><i class="fa  fa-location-arrow" aria-hidden="true"></i></span>
-                        Chiến dịch
-                        <i class="right fa fa-angle-left" aria-hidden="true"></i>
-                      </p>
-                    </a>
-                    <ul class="nav nav-treeview" style="border-style: solid; border-width: thin;border-color: coral; border-radius: 5px;">
-                      <li class="nav-item">
-                        <a href="/profile/sub" class="nav-link">
-                          <span class="text-success"><i class="fa  fa-plus" aria-hidden="true"></i></span>
-                          <p>Tạo mới chiến dịch</p>
-                        </a>
-                      </li>
-                      <li class="nav-item">
-                        <a href="/profile/sub" class="nav-link">
-                          <span class="text-info"><i class="fa fa-fighter-jet" aria-hidden="true"></i></span>
-                          <p>Chiến dịch đang chạy</p>
-                        </a>
-                      </li>
-                      <li class="nav-item">
-                        <a href="/profile/sub" class="nav-link">
-                          <span class="text-success"><i class="fa fa-check-square-o" aria-hidden="true"></i></span>
-                          <p>Chiến dịch hoàn tất</p>
-                        </a>
-                      </li>
                     </ul>
                   </li>
 
                 </ul>
-              </nav>
-              <!-- /.sidebar-menu -->
-            </div>
-            <!-- /.sidebar -->
-          </aside>
+              </li>
+              <li class="nav-item has-treeview menu-close">
+                <a href="#" class="nav-link">
+                  <i class="glyphicon glyphicon-home"></i>
+                  <p class="font-weight-bold">
+                    <span class="text-warning"><i class="fa fa-diamond" aria-hidden="true"></i></span>
+                    Coins
+                    <i class="right fa fa-angle-left" aria-hidden="true"></i>
+                  </p>
+                </a>
+                <ul class="nav nav-treeview" style="border-style: solid; border-width: thin;border-color: coral; border-radius: 5px;">
+                  <li class="nav-item">
+                    <a href="/coins/subscribe" class="nav-link">
+                      <span class="text-warning"><i class="fa fa-bookmark-o" aria-hidden="true"></i></span>
+                      <p>subscribe</p>
+                    </a>
+                  </li>
+                  <li class="nav-item">
+                    <a href="/coins/view" class="nav-link">
+                      <span class="text-info"><i class="fa fa-eye" aria-hidden="true"></i></span>
+                      <p> View</p>
+                    </a>
+                  </li>
+                  <li class="nav-item">
+                    <a href="/coins/like" class="nav-link">
+                      <span class="text-success"><i class="fa fa-thumbs-up" aria-hidden="true"></i></span>
+                      <p>Like</p>
+                    </a>
+                  </li>
+                  <li class="nav-item">
+                    <a href="/coins/ads" class="nav-link">
+                      <span class="text-danger"><i class="fa fa-bullhorn" aria-hidden="true"></i></span>
+                      <p>Advertisment</p>
+                    </a>
+                  </li>
+                  <li class="nav-item">
+                    <a href="/coins/cash" class="nav-link">
+                      <span class="text-warning"><i class="fa  fa-credit-card" aria-hidden="true"></i></span>
+                      <p>Cash</p>
+                    </a>
+                  </li>
+
+                </ul>
+              </li>
+              <li class="nav-item has-treeview menu-close">
+                <a href="#" class="nav-link">
+                  <i class="glyphicon glyphicon-home"></i>
+                  <p class="font-weight-bold">
+                    <span class="text-warning"><i class="fa  fa-location-arrow" aria-hidden="true"></i></span>
+                    Chiến dịch
+                    <i class="right fa fa-angle-left" aria-hidden="true"></i>
+                  </p>
+                </a>
+                <ul class="nav nav-treeview" style="border-style: solid; border-width: thin;border-color: coral; border-radius: 5px;">
+                  <li class="nav-item">
+                    <a href="/profile/sub" class="nav-link">
+                      <span class="text-success"><i class="fa  fa-plus" aria-hidden="true"></i></span>
+                      <p>Tạo mới chiến dịch</p>
+                    </a>
+                  </li>
+                  <li class="nav-item">
+                    <a href="/profile/sub" class="nav-link">
+                      <span class="text-info"><i class="fa fa-fighter-jet" aria-hidden="true"></i></span>
+                      <p>Chiến dịch đang chạy</p>
+                    </a>
+                  </li>
+                  <li class="nav-item">
+                    <a href="/profile/sub" class="nav-link">
+                      <span class="text-success"><i class="fa fa-check-square-o" aria-hidden="true"></i></span>
+                      <p>Chiến dịch hoàn tất</p>
+                    </a>
+                  </li>
+                </ul>
+              </li>
+
+            </ul>
+          </nav>
+          <!-- /.sidebar-menu -->
+        </div>
+        <!-- /.sidebar -->
+      </aside>
 
 
 
 
-          <!-- Content Wrapper. Contains page content -->
-          <div class="content-wrapper" style="padding-bottom:15px;">
-            <!-- Main content -->
-            <div class="content">
-              <%- body %>
-            </div>
-            <!-- /.content -->
-          </div>
-          <!-- /.content-wrapper -->
+      <!-- Content Wrapper. Contains page content -->
+      <div class="content-wrapper" style="padding-bottom:15px;">
+        <!-- Main content -->
+        <div class="content">
+          <%- body %>
+        </div>
+        <!-- /.content -->
+      </div>
+      <!-- /.content-wrapper -->
+      <!-- Main Footer -->
+      <footer class="main-footer">
+        <div class="float-right d-none d-sm-block">
+          <b>Version</b> 2020.0.0.1
+        </div>
+        <strong>Copyright © 2020 <a href="https://redoapp.com">ReDoApp</a>.</strong> All rights reserved.
+      </footer>
+    </div>
+    <!-- ./wrapper -->
