@@ -1,7 +1,7 @@
 
 <div class="card card-info">
   <div class="card-header">
-    <h2 class="card-title font-weight-bold text-uppercase">DANH SÁCH KÊNH ĐĂNG KÝ BẠN (<span class='text-warning'> <%=total%>/<%=user.subscriberCount%> công khai</span> )</h2>
+    <h2 class="card-title font-weight-bold text-uppercase">DANH SÁCH KÊNH bạn hủy đăng ký(<span class='text-warning'> <%=total%></span> )</h2>
     </div>
   <!-- /.card-header -->
   <!---pagination --->
@@ -11,7 +11,7 @@
       <%  for(var i =1; i<=pages;i++){ %>
         <li class="page-item
           <%if(i===1){%>active<%}%>
-        " id="<%=i%>"><a href="/subscription/besub/index?page=<%=i%>" class="page-link"><%=i%></a></li>
+        " id="<%=i%>"><a href="/subscription/index?page=<%=i%>" class="page-link"><%=i%></a></li>
       <%}%>
       </ul>
     </div>

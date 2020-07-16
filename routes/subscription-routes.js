@@ -9,7 +9,7 @@ function authCheck(req, res, next) {
     res.redirect('/');
   }
 }
-router.get('/index',authCheck,async function(req,res){
+router.get('/besub/index',authCheck,async function(req,res){
   const user = req.user;
   var page = req.query.page||1;
   let bs =await SUBSCRIPTION.find({$or:[
@@ -36,7 +36,7 @@ router.get('/index',authCheck,async function(req,res){
   });
 });
 
-router.get('/sub',authCheck,async function(req,res){
+router.get('/sub/index',authCheck,async function(req,res){
   const user = req.user;
   var page = req.query.page||1;
   let subs =await SUBSCRIPTION.find({
@@ -78,15 +78,41 @@ router.get('/recent',authCheck,function(req,res){
   });
 });
 
-
-router.get('/unsubscribe',authCheck,async function(req,res){
+router.get('/sub/unsubscribe',authCheck,async function(req,res){
   const user = req.user;
   var page = req.query.page||1;
-  var us =await SUBSCRIPTION({$or:[
+  var us =await SUBSCRIPTION.find({$or:[
+    {_1stChannelId:user.channelId,_1stSub:false,_1stCanSub:true},
+    {_2ndChannelId:user.channelId,_2ndSub:false,_2ndCanSub:true}
+  ]});
+
+  var data =[];
+  if(us.length){
+    data = await us.map(u =>{
+      var t = {};
+      t['channelId']  = u._1stChannelId === user.channelId?u._2ndChannelId:u._1stChannelId;
+      t['title']      = u._1stChannelId === user.channelId?u._2ndTitle:u._1stTitle;
+      t['thumbnail']  = u._1stChannelId === user.channelId?u._2ndThumbnail:u._1stThumbnail;
+      return t;
+    });
+  }
+  const pages = data.length%10===0?data.length/10:Math.floor(data.length/10)+1;
+  return res.render('sub/unsubscribe',
+  {
+    data:data.slice((page-1)*10,(page*10)),
+    user:user,
+    pages:pages,
+    total:data.length
+  });
+});
+
+router.get('/besub/unsubscribe',authCheck,async function(req,res){
+  const user = req.user;
+  var page = req.query.page||1;
+  var us =await SUBSCRIPTION.find({$or:[
     {_1stChannelId:user.channelId,_2ndSub:false,_2ndCanSub:true},
     {_2ndChannelId:user.channelId,_1stSub:false,_1stCanSub:true}
   ]});
-
   var data =[];
   if(us.length){
     data = await us.map(u =>{
