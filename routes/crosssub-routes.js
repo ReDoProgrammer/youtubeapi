@@ -67,7 +67,36 @@ router.post('/setting',authCheck,function(req,res){
     }
   });
 
-
+  router.get('/subscribe',authCheck,async function(req,res){
+    var user = req.user;
+    var page = req.query.page||1;
+    //get all channel that own channel subscribe in cross module
+    //and they do not subscribe back yet
+    var subs = SUBSCRIPTION.find({
+      $or:[
+        {_1stChannelId:user.channelId,_1stSub:true,_1stCross:true,_2ndSub:false,_2ndCanSub:false},
+        {_2ndChannelId:user.channelId,_2ndChannelId:true,_2ndCross:true,_1stSub:false,_1stCanSub:false}
+      ]
+    });
+    var data = [];
+    if(subs.length){
+      data = subs.map(s=>{
+        var t =[];
+        t['channelId']  = s._1stChannelId == user.channelId?s._2ndChannelId:s._1stChannelId;
+        t['title']      = s._1stChannelId == user.channelId?s._2ndTitle:s._1stTitle;
+        t['thumbnail']  = s._1stChannelId == user.channelId?s._2ndThumbnail:s._1stThumbnail
+        return t;
+      });
+    }
+    const pages = data.length%10===0?data.length/10:Math.floor(data.length/10)+1;
+    return res.render('crosssub/subscribe',
+    {
+      user:user,
+      data:data.slice((page-1)*10,(page*10)),
+      total:data.length,
+      pages:pages
+    });
+  });
 
 
   router.get('/crossing',authCheck,async function(req,res){
@@ -103,14 +132,14 @@ router.post('/setting',authCheck,function(req,res){
     });
   })
 
-  router.get('/wait',authCheck,async function(req,res){
+  router.get('/ready',authCheck,async function(req,res){
     let user = req.user;
     if(!user.isActiveCrossSub){
       return res.redirect('/crosssub/setting');
     }
-    CPR.getAvailable(user.channelId)
+    CPR.getReady(user.channelId)
     .then( data =>{
-      return res.render('crosssub/wait',
+      return res.render('crosssub/ready',
       {
         user:user,
         data:data
@@ -119,7 +148,7 @@ router.post('/setting',authCheck,function(req,res){
     .catch(err=>console.log(err));
   });
 
-  router.post('/wait',authCheck,async (req,res)=>{
+  router.post('/ready',authCheck,async (req,res)=>{
     var user = req.user;
 
     var channelId = req.body.channelId;
@@ -146,9 +175,9 @@ router.post('/setting',authCheck,function(req,res){
         _waittime:waittime
       },(err,result)=>{
         if(err) return log('insert cross sub failed: '+err);
-        CPR.getAvailable(user.channelId)
+        CPR.getReady(user.channelId)
         .then( data =>{
-          return res.render('crosssub/wait',
+          return res.render('crosssub/ready',
           {
             user:user,
             data:data
@@ -159,13 +188,96 @@ router.post('/setting',authCheck,function(req,res){
     .catch(err => console.log(err));
   });
 
-  router.get('/canceled',authCheck,(req,res)=>{
+
+  router.get('/waiting',authCheck,async (req,res)=>{
+    var user = req.user;
+    var page = req.query.page||1;
+    var data = [];
+    var w = await SUBSCRIPTION.find({
+      $or:[
+        {_1stChannelId:user.channelId,_1stSub:false,_1stCanSub:false,_2ndSub:true,_2ndCross:true},
+        {_2ndChannelId:user.channelId,_2ndSub:false,_2ndCanSub:false,_1stSub:true,_1stCross:true}
+      ]
+    });
+    if(w.length){
+      data = w.map(s=>{
+        var t = {};
+        t['channelId']    = s._1stChannelId==user.channelId?s._2ndChannelId:s._1stChannelId;
+        t['title']        = s._1stChannelId==user.channelId?s._2ndTitle:s._1stTitle;
+        t['thumbnail']    = s._1stChannelId==user.channelId?s._2ndThumbnail:s._1stThumbnail
+        return t;
+      });
+    }
+    const pages = data.length%10===0?data.length/10:Math.floor(data.length/10)+1;
+    return res.render('crosssub/waiting',{
+      user:user,
+      total:data.length,
+      data:data.slice((page-1)*10,(page*10)),
+      pages:pages
+    });
+  });
+
+  router.get('/canceled',authCheck,async (req,res)=>{
+    //get all channels that own channel unsubscribe in crossing modul
     var user = req.user;
     if(!user.isActiveCrossSub){
       return res.redirect('/crosssub/setting');
     }
+    var data =[];
+    var us = await SUBSCRIPTION.find({
+      $or:[
+        {_1stChannelId:user.channelId,_1stSub:false,_1stCanSub:true,_1stCross:true,_2ndSub:true,_2ndCanSub:false,_2ndCross:true},
+        {_2ndChannelId:user.channelId,_2ndSub:false,_2ndCanSub:true,_2ndCross:true,_1stSub:true,_1stCanSub:false,_1stCross:true}
+      ]
+    });
+    if(us.length){
+      data = us.map(s=>{
+        var t = {};
+        t['channelId']    = s._1stChannelId==user.channelId?s._2ndChannelId:s._1stChannelId;
+        t['title']        = s._1stChannelId==user.channelId?s._2ndTitle:s._1stTitle;
+        t['thumbnail']    = s._1stChannelId==user.channelId?s._2ndThumbnail:s._1stThumbnail;
+        return t;
+      });
+    }
+    var page = req.query.page||1;
+    const pages = data.length%10===0?data.length/10:Math.floor(data.length/10)+1;
     return res.render('crosssub/canceled',{
-      user:user
+      user:user,
+      total:data.length,
+      data:data.slice((page-1)*10,(page*10)),
+      pages:pages
+    });
+  });
+
+  router.get('/be-canceled',authCheck,async (req,res)=>{
+    //get all channels that own channel unsubscribe in crossing modul
+    var user = req.user;
+    if(!user.isActiveCrossSub){
+      return res.redirect('/crosssub/setting');
+    }
+    var data =[];
+    var us = await SUBSCRIPTION.find({
+      $or:[
+        {_1stChannelId:user.channelId,_1stSub:true,_1stCanSub:false,_1stCross:true,_2ndSub:false,_2ndCanSub:true,_2ndCross:true},
+        {_2ndChannelId:user.channelId,_2ndSub:true,_2ndCanSub:false,_2ndCross:true,_1stSub:false,_1stCanSub:true,_1stCross:true}
+      ]
+    });
+    if(us.length){
+      data = us.map(s=>{
+        var t = {};
+        t['channelId']    = s._1stChannelId==user.channelId?s._2ndChannelId:s._1stChannelId;
+        t['title']        = s._1stChannelId==user.channelId?s._2ndTitle:s._1stTitle;
+        t['thumbnail']    = s._1stChannelId==user.channelId?s._2ndThumbnail:s._1stThumbnail;
+        return t;
+      });
+    }
+    var page = req.query.page||1;
+    const pages = data.length%10===0?data.length/10:Math.floor(data.length/10)+1;
+    return res.render('crosssub/be-canceled',{
+      user:user,
+      total:data.length,
+      data:data.slice((page-1)*10,(page*10)),
+      pages:pages
     });
   });
 

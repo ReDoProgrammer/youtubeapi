@@ -1,7 +1,7 @@
 
 <div class="card card-info">
   <div class="card-header">
-    <h2 class="card-title font-weight-bold text-uppercase">DANH SÁCH chờ subcribe chéo</h2>
+    <h2 class="card-title font-weight-bold text-uppercase">DANH SÁCH tham gia sub chéo</h2>
   </div>
   <!-- /.card-header -->
 
@@ -32,7 +32,7 @@
             </td>
             <td class="text-center col-md-1 col-sm-12 font-weight-bold text-warning"><%=channel.reputationPoint%></td>
             <td class="text-center col-md-2 col-sm-12 font-weight-bold text-danger"><%=channel.minDurationView%></td>
-            <td class="col-md-1 col-sm-12 text-center"><a href="#" class="btn btn-danger btn-subcribe" data-duration="<%=channel.minDurationView%>"  id="<%=channel.channelId%>" data-video="<%=channel.recentVideos[0].videoId%>">Subcribe</a></td>
+            <td class="col-md-1 col-sm-12 text-center"><a href="#" class="btn btn-danger btn-subcribe" data-duration="<%=channel.minDurationView%>"  id="<%=channel.channelId%>" data-video="<%=channel.videoId%>">Subcribe</a></td>
           </tr>
           <%})%>
         </tbody>
@@ -78,7 +78,7 @@
       });
 
       //hide button subscribe
-      // $('#subscribe').hide();
+      $('#subscribe').hide();
 
       //get video id
       var videoId = $(this).attr('data-video');

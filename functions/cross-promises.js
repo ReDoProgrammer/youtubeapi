@@ -1,7 +1,7 @@
 const SUBSCRIPTION = require('../models/subscription-model');
 Channel = require('../models/channel-model');
 module.exports = class Cross{
-  static getAvailable(channelId){
+  static getReady(channelId){
     return new Promise(async (resolve,reject)=>{
       try {
         let subs = await SUBSCRIPTION.find({
@@ -25,14 +25,7 @@ module.exports = class Cross{
           return o;
         });
 
-        let channels = await Channel.find({channelId: {$nin:[channelId]},isActiveCrossSub:true})
-        .populate({
-          path: 'recentVideos',
-          options:{
-            limit:1,
-            sort:{id:-1}
-          }
-        });
+        let channels = await Channel.find({channelId: {$nin:[channelId]},isActiveCrossSub:true});      
 
         let notIn = [];
         await channels.forEach(async s=>{

@@ -1,7 +1,7 @@
 
 <div class="card card-info">
   <div class="card-header">
-    <h2 class="card-title font-weight-bold text-uppercase">DANH SÁCH KÊNH đang subscribe chéo với bạn (<span class='text-warning'> <%=total%></span> )</h2>
+    <h2 class="card-title font-weight-bold text-uppercase">DANH SÁCH KÊNH bạn đăng ký & chưa trả sub cho bạn(<span class='text-warning'> <%=total%></span> )</h2>
     </div>
   <!-- /.card-header -->
   <!---pagination --->
@@ -11,7 +11,7 @@
       <%  for(var i =1; i<=pages;i++){ %>
         <li class="page-item
           <%if(i===1){%>active<%}%>
-        " id="<%=i%>"><a href="/subcription/index?page=<%=i%>" class="page-link"><%=i%></a></li>
+        " id="<%=i%>"><a href="/crosssub/subscribe/index?page=<%=i%>" class="page-link"><%=i%></a></li>
       <%}%>
       </ul>
     </div>
@@ -21,7 +21,7 @@
     <div class="card-body">
        <table class="table table-striped">
            <thead style="background-color:#CCFFFF">
-             <th class="text-success text-center">
+             <th class="text-success">
                Logo
              </th>
               <th class="text-success">
@@ -31,7 +31,7 @@
            <tbody>
              <%data.forEach(function(channel){%>
                 <tr>
-                  <td class='text-center'><a href='https://www.youtube.com/channel/<%=channel.partnerId%>' target='_blank'><img src = '<%=channel.thumbnail%>' width="40px;" class ='img-circle'/></a></td>
+                  <td><a href='https://www.youtube.com/channel/<%=channel.partnerId%>' target='_blank'><img src = '<%=channel.thumbnail%>' width="40px;" class ='img-circle'/></a></td>
                   <td class='align-middle font-weight-bold'><a href='https://www.youtube.com/channel/<%=channel.channelId%>' target='_blank'><%=channel.title%></a>
                   </td>
                 </tr>
